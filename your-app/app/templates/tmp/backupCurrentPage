@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+{% include('headtep.twig') %}
+<html>
+<head>
+   <meta name="viewport" content="initial-scale=1.0">
+   <meta charset="utf-8">
+   <title>current</title>
+   <style>
+      .box1,.box2{ border-radius: 20px;
+       border:2px solid #333; }
+      .wrap1,.wrap2,.wrap3 { overflow: hidden; width:1600px; margin:0 auto;
+      }
+      .box1,.box2{
+         width:350px; height:95px; float:left;
+      }
+      .box3{ border-radius: 20px;
+         width:720px; height:500px; float:left;
+      }
+      .box4{ border-radius: 20px;
+        width:499px; height:397px; float:left;
+      }
+      .box2,.box4 {
+         margin-left:5%;}
+
+      .wrap2 {
+         margin-top:10px;
+      }
+      .wrap2 select { 
+         width:120px; font-weight: bold; font-size:1.2em; border:2px solid;
+      }
+
+      .wrap{ 
+         display: flex; text-align: center;
+         align-content: stretch;
+         width:497px; overflow: hidden;
+      }
+      .wrap>div
+      {
+         border:5px solid #7a8b91;
+         width:400px;
+         height:297px;
+         float:left;
+         color: black
+      }
+      .grid-container {
+        border-radius: 20px;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  background-color: white;
+}
+.grid-item1,.grid-item2,.grid-item3,.grid-item4,.grid-item5,.grid-item6{
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid #39d3fa;
+  font-size: 15px;
+  text-align: left;
+}
+.grid-item1 {
+  margin-right: 10px;
+  margin-bottom: 10px;
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+.grid-item2 {
+  margin-bottom: 10px;
+  grid-column-start: 3;
+  grid-column-end: 5;
+}
+.grid-item3 {
+  margin-bottom: 10px;
+  margin-right: 10px;
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+.grid-item4 {
+  margin-bottom: 10px;
+  grid-column-start: 3;
+  grid-column-end: 5;
+}
+.grid-item5 {
+  margin-right: 10px;
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+.grid-item6 {
+  grid-column-start: 3;
+  grid-column-end: 5;
+}
+   </style>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+        width : 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+
+
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> 
+<script>
+    var current = (function () {
+        var json = null;
+        $.ajax({
+        'async': false,
+        'url': "/pagecurrent",
+        'dataType': "json",
+        'success': function (data) {
+            json = data;
+        }
+    });
+    return json;
+})();
+
+</script>
+
+<body>
+
+     <div class="wrap2">
+      <select style="margin-left: 10px">
+	{% if sensor != NULL %}
+		{%for i in sensor%}
+        		 <option>{{i.name}}</option>
+		{% endfor %}
+	{% else %}
+		<option>No registration</option>
+	{% endif %}
+      </select>
+   </div>
+
+   <div class="wrap1">
+       <div style="margin-left: 220px;margin-top: 5px; text-align: center;" class="box1"><a style="  color: black; font-size: 25px">My Location</a><br> Longtitude : 32.879423<br> Letitude : -117.233874
+      </div>
+
+      <div class="grid-item1" style="background-color: #ebfbff; width: 550px; height: 100px; float: right; margin-right: 220px">
+              <img src="{{base_url()}}/assets/img/team/heartred.png" style="margin-left: 200px; margin-top: 21px">
+              <a style="float: right; margin-top: 26px; margin-right: 175px; font-size: 25px; font-weight: bolder; color: #001580">&nbsp;{{nowpolar}}bpm</a>
+      </div>
+   </div>
+
+   <div class="wrap3" style="margin-left: 30px">
+      <div class="box3">
+       <!---Google Map Start-->
+
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        // Create the map.
+  console.log(current);
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 13,
+          center: {lat: 32.882427, lng:-117.2370904},
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+
+        var infowindow = new google.maps.InfoWindow();
+  
+  // Construct the circle for each value in citymap.
+        // Note: We scale the area of the circle based on the population.
+  
+  for (var i in current) {
+        // Create marker 
+
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: current[i]['center'],
+        html: "NO2 : " + current[i]['no2'] + "<br/>"
+       +"O3 : " + current[i]['o3'] + "<br/>"
+       +"CO : " + current[i]['co'] + "<br/>"
+       +"SO2 : " + current[i]['so2'] + "<br/>"
+       +"PM2.5 : " + current[i]['pm'] + "<br/>"
+       +"measured time : " + current[i]['time'] + "<br/>"
+                });
+
+                google.maps.event.addListener(marker, 'click', function(evt) { 
+
+                    infowindow.setContent(this.html);
+                    infowindow.open(map, this);
+                    })
+
+                //radiuss = 350;
+                //color = "green";
+                //var cityCircle = new google.maps.Circle({
+                //    strokeColor: color,
+                //    strokeOpacity: 1,
+                //    strokeWeight: 2,
+                //    fillColor: color,
+                //    fillOpacity: 0.15,
+                //    map: map,
+                //    center: current[i]['center'],
+                //    radius: radiuss
+                //});
+        }
+      }
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFxp4r3cuwmH8RQ23fRVpCelRWEwRWbrs&callback=initMap"
+    async defer></script>
+<!--End Google Map-->
+      </div>
+      <div class="box4">
+          <div class="grid-container">
+            <div class="grid-item1" style="background-color: #ebfbff; width: 270px; height: 155px;">
+              <img src="{{base_url()}}/assets/img/team/temp.png" style="margin-left: 50px; margin-top: 45px">
+              <a style="float: right; margin-top: 53px; margin-right: 98px; font-size: 25px; font-weight: bolder; color: #001580">88℉</a>
+            </div>
+            <div class="grid-item2" style="background-color: #ebfbff; width: 270px; height: 155px;">
+              <img src="{{base_url()}}/assets/img/team/COgreen.png" style="margin-left: 50px; margin-top: 45px">
+              <a style="float: right; margin-top: 53px; margin-right: 50px; font-size: 25px; font-weight: bolder; color: #001580">220ppm</a>
+            </div>
+            <div class="grid-item3" style="background-color: #ebfbff; width: 270px; height: 155px;">
+              <img src="{{base_url()}}/assets/img/team/NO2red.png" style="margin-left: 50px; margin-top: 45px">
+              <a style="float: right; margin-top: 53px; margin-right: 50px; font-size: 25px; font-weight: bolder; color: #001580"> 230ppm</a>
+            </div>  
+            <div class="grid-item4" style="background-color: #ebfbff; width: 270px; height: 155px;">
+              <img src="{{base_url()}}/assets/img/team/O3orange.png" style="margin-left: 50px; margin-top: 45px">
+              <a style="float: right; margin-top: 53px; margin-right: 50px; font-size: 25px; font-weight: bolder; color: #001580">150ppm</a>
+            </div>
+            <div class="grid-item5" style="background-color: #ebfbff; width: 270px; height: 155px;">
+              <img src="{{base_url()}}/assets/img/team/SO2maroon.png" style="margin-left: 50px; margin-top: 45px">
+              <a style="float: right; margin-top: 53px; margin-right: 50px; font-size: 25px; font-weight: bolder; color: #001580">180ppm</a>
+            </div>
+            <div class="grid-item6" style="background-color: #ebfbff; width: 270px; height: 155px;">
+              <img src="{{base_url()}}/assets/img/team/PM2.5red.png" style="margin-left: 50px; margin-top: 45px">
+              <a style="float: right; margin-top: 53px; margin-right: 50px; font-size: 25px; font-weight: bolder; color: #001580">285ppm</a>
+            </div>    
+          </div>
+      </div>
+   </div>
+
+<!--
+<script>
+var intervalID = setInterval(sayHello, 1000);
+
+function sayHello() {
+     $.ajax({ 
+          type:"GET",
+          url:"/current",
+          });
+}
+</script>	
+--!>
+<script>
+setTimeout(function(){
+location.reload();
+},5000);
+</script>
+
+
+
+</body>
+</html>

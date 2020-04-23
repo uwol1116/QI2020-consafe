@@ -1,0 +1,73 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Consafe</title>
+  <meta content="" name="descriptison">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{{ base_url() }}/assets/img/favicon.png" rel="icon">
+  <link href="{{ base_url() }}/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,600,600i,700,700i,900" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{{ base_url() }}/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="{{ base_url() }}/assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+  <link href="{{ base_url() }}/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="{{ base_url() }}/assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+  <link href="{{ base_url() }}/assets/vendor/venobox/venobox.css" rel="stylesheet">
+  <link href="{{ base_url() }}/assets/vendor/aos/aos.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{{ base_url() }}/assets/css/style.css" rel="stylesheet">
+  <!-- ======= Header ======= -->
+  <header id="header" style="background-color: #EBFBFF">
+    <div class="container">
+
+      <div class="logo float-left">
+        <h1 class="text-light"><a href="/"><span>Consafe</span></a></h1>
+
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <!-- <a href="/"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+      </div>
+
+      <nav class="nav-menu float-right d-none d-lg-block">
+        <ul>
+          <li class="active"><a href="/#hero">Home <i class="la la-angle-down"></i></a></li>
+          <li><a href="/#services">Services</a></li>
+          <li><a href="/#team">Team</a></li>
+
+	{% if session.usn is not null  %}	
+          <li><a href="/current">Current</a></li>
+          <li class="drop-down"><a href="#">History</a>
+            <ul>
+              <li><a href="/viewpolarhistory">Heart Rate</a></li>
+              <li class="drop-down"><a href="#">Air Quality</a>
+                <ul>
+                  <li><a href="/No2history">NO2</a></li>
+                  <li><a href="/O3history">O3</a></li>
+                  <li><a href="/COhistory">CO</a></li>
+                  <li><a href="/So2history">SO2</a></li>
+                  <li><a href="/pmhistory">PM2.5</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li><a href="/profile">Profile</a></li>
+	  <li><a href="/signout">Sign Out</a></li>
+
+	{% else %}
+          <li><a href="/signin">Sign In</a></li>
+	{% endif %}
+	
+        </ul>
+      </nav><!-- .nav-menu -->
+
+    </div>
+  </header><!-- End Header -->
+</head>
+</html>

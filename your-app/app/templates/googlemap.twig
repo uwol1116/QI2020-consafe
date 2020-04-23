@@ -1,0 +1,97 @@
+{% include('headtep.twig') %}
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> 
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 50%;
+	width : 40%;
+	margin: 35px;
+	
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+    var current = (function () {
+        var json = null;
+        $.ajax({
+        'async': false,
+        'url': "/pagecurrent",
+        'dataType': "json",
+        'success': function (data) {
+            json = data;
+        }
+    });
+    return json;
+})(); 
+      
+      function initMap() {
+        // Create the map.
+	console.log(current);
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 13,
+          center: {lat: 32.882427, lng:-117.2370904},
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+
+        var infowindow = new google.maps.InfoWindow();
+	
+	// Construct the circle for each value in citymap.
+        // Note: We scale the area of the circle based on the population.
+	
+	for (var i in current) {
+        // Create marker 
+
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: current[i]['center'],
+		    html: "NO2 : " + current[i]['no2'] + "<br/>"
+			 +"O3 : " + current[i]['o3'] + "<br/>"
+			 +"CO : " + current[i]['co'] + "<br/>"
+			 +"SO2 : " + current[i]['so2'] + "<br/>"
+			 +"PM2.5 : " + current[i]['pm'] + "<br/>"
+			 +"measured time : "+current[i]['time'] + "<br/>"
+                });
+
+                google.maps.event.addListener(marker, 'click', function(evt) { 
+
+                    infowindow.setContent(this.html);
+                    infowindow.open(map, this);
+                    })
+
+                radiuss = 350;
+                color = "green";
+                var cityCircle = new google.maps.Circle({
+                    strokeColor: color,
+                    strokeOpacity: 1,
+                    strokeWeight: 2,
+                    fillColor: color,
+                    fillOpacity: 0.15,
+                    map: map,
+                    center: current[i]['center'],
+                    radius: radiuss
+                });
+        }
+      }
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFxp4r3cuwmH8RQ23fRVpCelRWEwRWbrs&callback=initMap"
+    async defer></script>
+  </body>
+</html>

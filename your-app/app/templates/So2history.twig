@@ -1,0 +1,212 @@
+{% include('headtep.twig') %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+	    <meta name="viewport" content="initial-scale=1.0">
+        
+        <title>jQuery UI</title>
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"/>
+        
+        <style>
+        /*datepicker에서 사용한 이미지 버튼 style적용*/
+        img.ui-datepicker-trigger {
+            margin-left:5px; 
+		    vertical-align:middle; 
+		    cursor:pointer;
+		    height:30px;
+	    }
+        </style>
+	
+    	<style>
+      	/* Always set the map height explicitly to define the size of the div
+       	* element that contains the map. */
+      	#map {
+       		height: 90%;
+       		width : 95%;
+       		margin: 13px;
+      	}
+      	/* Optional: Makes the sample page fill the window. */
+      	html, body {
+        	height: 100%;
+        	margin: 0;
+        	padding: 0;
+      	}	
+    	</style>
+	
+
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+	    <script>
+            $(function() {
+                //오늘 날짜를 출력
+                $("#today").text(new Date().toLocaleDateString());
+
+                //시작일.
+                $('#fromDate').datepicker({
+                    showOn: "both",                     // 달력을 표시할 타이밍 (both: focus or button)
+                    buttonImage: "data:image/png;base64,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", // 버튼 이미지
+                    buttonImageOnly : true,             // 버튼 이미지만 표시할지 여부
+                    buttonText: "날짜선택",             // 버튼의 대체 텍스트
+                    dateFormat: "yy-mm-dd",             // 날짜의 형식
+                    changeMonth: true,                  // 월을 이동하기 위한 선택상자 표시여부
+                    onClose: function( selectedDate ) {    
+                    $("#toDate").datepicker( "option", "minDate", selectedDate );
+                    }                
+                });
+		        $('#fromDate').datepicker('setDate', 'today');
+
+                //종료일
+                $('#toDate').datepicker({
+                    showOn: "both", 
+                    buttonImage: "data:image/png;base64,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", 
+                    buttonImageOnly : true,
+                    buttonText: "날짜선택",
+                    dateFormat: "yy-mm-dd",
+                    changeMonth: true,
+                    onClose: function( selectedDate ) {
+                    $("#fromDate").datepicker( "option", "maxDate", selectedDate );
+                    }                
+                });
+		        $('#toDate').datepicker('setDate', 'today');
+            });
+        </script>
+
+
+    </head>
+    <body>
+	    </br>
+    	<div style="float:left;width:100%;height:10%">
+         <form>
+             <label for="fromDate">&nbsp;&nbsp;&nbsp;Start</label>
+             <input type="text" name="fromDate" id="fromDate">
+             ~
+             <label for="toDate">End</label>
+             <input type="text" name="toDate" id="toDate">
+	            <input type="button" name="submit" value="search" onclick="showmap()">
+         </form>
+	    </div>
+	    <div style="float:left;width:30%;height:80%;background-Color:#F2FFFF">    <div id="map"></div></div>
+
+        <script>
+
+        var map;
+        var infowindow = {};
+        var markers = [];
+        var current;
+        var nowlat;
+        var nowlng;
+
+        function showmap(){
+            var json = null;
+            $.ajax({
+             	type: 'get',
+                url: "/So2map?fromDate="+$("#fromDate").val()+"&toDate="+$("#toDate").val(),
+                dataType: "json", 
+                success: function (data) {
+                    current = data; 
+                    deleteMarkers();
+                    makemarker();
+                }
+            });
+        }
+
+        function makemarker(){       
+            for (var i in current) {
+                // Create marker
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: current[i]['center'],
+                    html: "So2 : " + current[i]['so2'] + "<br/>"
+                    +"measured time : "+current[i]['time'] + "<br/>",
+                    relat: current[i]['center']['lat'],
+                    relng: current[i]['center']['lng']
+                    });
+
+                    markers.push(marker);
+                       
+                google.maps.event.addListener(marker, 'click', function(evt) {
+                    infowindow.setContent(this.html);
+                    infowindow.open(map, this);
+                    nowlat = this.relat;
+                    nowlng = this.relng;
+                    drawChart();
+                })
+            }
+        }
+
+        function setMapOnAll(map) {
+            for ( var i = 0; i < markers.length; i++ ) {
+                infowindow.close();
+                markers[i].setMap(null);
+            }
+        }
+
+        function clearMarker(){
+            setMapOnAll(null);
+        }
+
+        function deleteMarkers() {
+            clearMarker();
+            markers = [];
+        }
+
+        function initMap() {
+            // Create the map.
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: {lat: 32.882427, lng:-117.2370904},
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
+
+            infowindow = new google.maps.InfoWindow();
+
+        }
+
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDFxp4r3cuwmH8RQ23fRVpCelRWEwRWbrs&callback=initMap" 
+        async defer></script>
+
+        <script type="text/javascript">
+        
+        google.load("visualization", "1", {packages:["corechart"]});
+        google.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+           var convert = [['time','so2']];
+            current.map((item) => {
+                if(item.center.lng == nowlng && item.center.lat == nowlat){
+                    convert.push([item.time,item.so2])
+                }
+                });
+            console.log(convert);
+            var data = google.visualization.arrayToDataTable(convert);
+
+            var options = {
+                width: 1100, height: 580,
+                title: 'SO2 history',
+                hAxis : {
+                    title : 'Date/Time'
+                },
+                vAxis: {
+                    title: 'SO2'
+                }
+            }
+            
+            var chart = new google.visualization.LineChart(document.getElementById('chart_div'))
+            chart.draw(data,options);
+
+            $('html,body').click(function(){
+                drawChart();
+            });
+            
+        }
+        </script>
+
+	    <div style="float:left;width:70%;height:80%"><div id="chart_div"></div>
+    </body>
+</html>

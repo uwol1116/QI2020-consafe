@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+{% include('headtep.twig') %}
+<html>
+  <body>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <div class="container">
+    
+    <div class="col"> <!---first container-->
+      <br><br><br><br><br>
+       <div class="col-md-5  toppad  pull-right col-md-offset-3 ">
+         <p class="text-info"></p>
+       </div>
+     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-0 toppad" >   
+       <div class="panel panel-info">
+         <div class="panel-heading">
+           <h3 class="panel-title">My Profile</h3>
+         </div>
+         <div class="panel-body">
+           <div class="row">
+             <div class="col-md-3 col-lg-3"><img alt="User Pic" src="{{ base_url() }}/assets/img/team/Kyung3.jpg" class="img-circle img-responsive">
+             </div>                
+             <div class=" col-md-9 col-lg-9 "> 
+               <table class="table table-user-information">
+                <tbody>
+                  <tr>
+                    <td>Name</td> <td>{{name}}</td>
+                  </tr>
+                  <tr>
+                    <td>Email</td> <td>{{email}}</td>
+                  </tr>
+                    <td>Company</td> <td>email</td>
+  		            <tr>
+                    <td></td>
+                    <td><br><br></td>
+                  </tr> 
+             
+                </tbody>
+               </table>
+             </div>
+           </div>
+         </div>
+    
+          <div class="panel-footer">
+           <a href="#" class="btn btn-primary">Edit Profile</a>
+            <a href="/changepassword" class="btn btn-primary">Change Password</a>              
+            <span style="margin-left: 27%"><a href="removeaccount">ID Cancelation</a>
+            </span>
+            <span class="pull-right">
+             </span>
+          </div>   
+           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-1 col-lg-9 toppad" >   
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title">Sensor List</h3>
+          </div>
+          <div class="panel-body">
+            <div class="row">                
+              <div class=" col-md-9 col-lg-9 col-lg-9"> 
+                <table class="table table-user-information">
+                  <tbody>
+                    UDBOARD </br>
+                    {% for udoo in sensor %}
+                     {% if udoo.type == 0 %}
+                       <tr>
+                         <td>{{udoo.name}}</td>
+                         <td>{{udoo.mac}}</td>
+                       </tr>
+                     {% endif %}
+                    {% endfor %}
+                  </tbody>
+                
+                </table>
+                <table class="table table-user-information">
+                  <tbody>
+                    Polar Sensor</br>
+                    {% for polar in sensor %}
+                     {% if polar.type == 1 %}
+                       <tr>
+                         <td>{{polar.name}}</td>
+                         <td>{{polar.mac}}</td>
+                       </tr>
+                     {% endif %}
+                    {% endfor %}                                           
+                  </tbody>
+                </table>                 
+              </div>
+            </div>
+          </div>         
+          </div>
+        </div>
+      </div>
+    </div>
+    </div> 
+  </div>
+</body>
+</html>
